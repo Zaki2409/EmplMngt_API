@@ -30,10 +30,15 @@ namespace EmplMngt.Controllers
 
         public async Task<IActionResult> AddEmployee([FromBody] Employee employeeRequest)
         {
-            employeeRequest.Id = new Guid();
-            await _EmplMngtDbContext.Employees.AddAsync(employeeRequest);
-            await _EmplMngtDbContext.SaveChangesAsync();
-            return Ok(employeeRequest);
+            if (ModelState.IsValid)
+            {
+                employeeRequest.Id = new Guid();
+                await _EmplMngtDbContext.Employees.AddAsync(employeeRequest);
+                await _EmplMngtDbContext.SaveChangesAsync();
+                return Ok(employeeRequest);
+            }
+
+           return View(employeeRequest);
 
         }
 
@@ -64,15 +69,19 @@ namespace EmplMngt.Controllers
                 return NotFound(id);
             }
 
-            emp.Name = empludatereq.Name;
-            emp.Email = empludatereq.Email;
-            emp.Gender = empludatereq.Gender;
-            emp.Phone = empludatereq.Phone;
-            emp.Salary = empludatereq.Salary;
-            emp.Department = empludatereq.Department;
+            if (ModelState.IsValid)
+            {
+                emp.Name = empludatereq.Name;
+                emp.Email = empludatereq.Email;
+                emp.Gender = empludatereq.Gender;
+                emp.Phone = empludatereq.Phone;
+                emp.Salary = empludatereq.Salary;
+                emp.Department = empludatereq.Department;
 
-            await _EmplMngtDbContext.SaveChangesAsync();
-            return Ok(emp);
+                await _EmplMngtDbContext.SaveChangesAsync();
+                return Ok(emp);
+            }
+            return View(emp);
         }
 
         [HttpDelete]

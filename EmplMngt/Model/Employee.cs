@@ -16,8 +16,10 @@ namespace EmplMngt.Model
         [Required]
         public string Department { get; set; }
         [Required]
+        [Range(0, 9)]
         public long Phone { get; set; }
         [Required]
+        [Range(10000, 300000)]
         public long Salary { get; set; }
 
 
